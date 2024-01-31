@@ -9,7 +9,7 @@
 # generates various plots.	               #
 
 # Steven Heaton
-# 2024-01-18
+# 2024-02-01
 
 # define version info
     name="alphaPhysical"
@@ -161,7 +161,7 @@ done
 				-v /var/run/docker.sock:/var/run/docker.sock \
 				-v /usr/bin/com.docker.cli:/usr/bin/docker \
 				-v "${output}":/project/target \
-					alphaphysical:latest python3 /project/scripts/get_ss_charge.py
+					alphaphysical:latest python3 /project/scripts/get_ss_charge_stability.py
 		}
 
 	# function for plotting extracted biophysical parameters
@@ -174,14 +174,24 @@ done
 					alphaphysical:latest python3 /project/scripts/plot_ss_results.py
 		}
 
-	# function for extracting charge states
-		extract_charge_values(){
-			echo -e "${PURPLE}[INFO] Extracting charge states...${NC}"
+	# function for extracting stability and charge states
+		extract_charge_stability_values(){
+			echo -e "${PURPLE}[INFO] Extracting stability and charge states...${NC}"
 			docker run -it --rm --name "alphaphysical_chargeextract" \
 				-v /var/run/docker.sock:/var/run/docker.sock \
 				-v /usr/bin/com.docker.cli:/usr/bin/docker \
 				-v "${output}":/project/target \
-					alphaphysical:latest bash /project/scripts/extract_charge_values.sh
+					alphaphysical:latest bash /project/scripts/extract_charge_stability_values.sh
+		}
+
+	# function for plotting extracted stability and charge states
+		plot_charge_stability_curves(){
+			echo -e "${PURPLE}[INFO] Creating stability and charge plots...${NC}"
+			docker run -it --rm --name "alphaphysical_chargeplot" \
+				-v /var/run/docker.sock:/var/run/docker.sock \
+				-v /usr/bin/com.docker.cli:/usr/bin/docker \
+				-v "${output}":/project/target \
+					alphaphysical:latest python3 /project/scripts/plot_charge_stability_curves.py
 		}
 
 	# function for plotting surface charge maps
@@ -192,16 +202,6 @@ done
 				-v /usr/bin/com.docker.cli:/usr/bin/docker \
 				-v "${output}":/project/target \
 					alphaphysical:latest python3 /project/scripts/create_charge_map.py
-		}
-
-	# function for plotting extracted charge states
-		plot_charge_curves(){
-			echo -e "${PURPLE}[INFO] Creating charge plots...${NC}"
-			docker run -it --rm --name "alphaphysical_chargeplot" \
-				-v /var/run/docker.sock:/var/run/docker.sock \
-				-v /usr/bin/com.docker.cli:/usr/bin/docker \
-				-v "${output}":/project/target \
-					alphaphysical:latest python3 /project/scripts/plot_charge_curves.py
 		}
 
 	# function for performing structural alignments and calculating RMSD
@@ -226,8 +226,8 @@ done
 			done
 
 			get_structure_parameters
-			extract_charge_values
-			plot_charge_curves
+			extract_charge_stability_values
+			plot_charge_stability_curves
 			# create_charge_maps
 			plot_structure_parameters
 			# align_all_structures

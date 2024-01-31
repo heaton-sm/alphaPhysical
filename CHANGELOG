@@ -1,7 +1,21 @@
+[0.2] - 2024-02-01
+
+Added
+- Functions for extracting and plotting pH of maximum stability.
+
+Changed
+- Removed unused variable in plot_charge_curves.py.
+- Renamed scripts incorporating stability calculation and plotting.
+- Updated README with corresponding changes.
+
+Fixed
+
+
+
 [0.1] - 2024-01-28
 
 Added
-Initial commit
+- Initial commit
 
 Changed
 Fixed

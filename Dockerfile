@@ -4,7 +4,7 @@ LABEL author="Steven Heaton" \
       description="Docker image for the alphaPhysical protein structure analysis pipeline"
 
 ## PREPARE ENVIRONMENT ##
-ENV VERSION=0.1 \
+ENV VERSION=0.2 \
     MAFFT_VER=7.520 \
     PYTHON3_VER=3.11 \
     LANG=C.UTF-8 \
